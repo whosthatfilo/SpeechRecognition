@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         mTextTv = (TextView) findViewById(R.id.textTv);
         mTextResponses = (TextView) findViewById(R.id.textTv);
         mVoiceBtn = (ImageButton) findViewById(R.id.voiceBtn);
+
+        //create array list and connect it to xml file
         wordBank = Arrays.asList(getResources().getStringArray(R.array.Words));
         responses = Arrays.asList(getResources().getStringArray(R.array.responses));
 
