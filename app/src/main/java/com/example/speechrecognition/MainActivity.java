@@ -79,15 +79,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+
+        //this is the counter for the responses loop
         int responseItem =0;
         if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == RESULT_OK) {
             ArrayList<String> result = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            mTextTv.setText(result.get(0).toUpperCase());
+            //loops every word in a phrase until it keyword from wordBank
             for(String wordItem: wordBank) {
                 if (result.get(0).contains(wordItem)) {
-                    mTextTv.setText(result.get(0).toUpperCase());
                     mTextResponses.setText(responses.get(responseItem).toString());
                     break;
                 }
+                //item +1
+                //this moves to the next word, and it will check if there is key word in word item
                 responseItem++;
             }
         }
