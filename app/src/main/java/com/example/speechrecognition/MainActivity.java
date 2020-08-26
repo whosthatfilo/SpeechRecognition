@@ -9,13 +9,21 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-
 public class MainActivity extends AppCompatActivity {
+
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
     //views from activity
@@ -35,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     List<String> responses = new ArrayList<>();
 
     boolean word = false;
+    private BottomNavigationView bottomNavigationView;
+    FragmentManager fragmentManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +68,36 @@ public class MainActivity extends AppCompatActivity {
                 speak();
             }
         });
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new
+            BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                    Fragment fragment = null;
+                    switch (menuItem.getItemId()) {
+                        case R.id.Home:
+                            fragment = new HomeFragment();
+                            break;
+                        case R.id.Mic:
+                            fragment = new MicFragment();
+                            break;
+                        case R.id.About:
+                            fragment = new AboutFragment();
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+                    return true;
+                }
+
+            };
+
 
     public void speak() {
         //intent to show speech to text dialog
